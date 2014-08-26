@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Paardrijlessen</string>
+    <string name="action_settings">Instellingen</string>
+    <string name="title_activity_add_horse">Paard toevoegen</string>
+    <string name="horse_label">Naam</string>
+    <string name="save">Opslaan</string>
+    <string name="title_activity_horse_adapter">Paarden</string>
+    <string name="title_activity_horse">Paard</string>
+    <string name="horse_type_label">Ras</string>
+    <string name="unique_name">De naam moet uniek zijn.</string>
+    <string name="unique_name_mandatory">Naam is verplicht.</string>
+    <string name="title_activity_lesson_adapter">Lessen</string>
+    <string name="title_activity_add_lesson">Les toevoegen</string>
+    <string name="lesson_description">Omschrijving</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="lesson_date">Datum</string>
+    <string name="exception_date">De datum is niet correct.</string>
+    <string name="title_activity_lesson">Les</string>
+    <string name="lesson_grade">Cijfer</string>
+
+</resources>

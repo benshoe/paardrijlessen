@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activities">
+        <item>Paarden</item>
+        <item>Lessen</item>
+    </string-array>
+    <string-array name="horse_types_array">
+        <item>Onbekend</item>
+        <item>Appaloosa</item>
+        <item>Arabier</item>
+        <item>Fjord</item>
+        <item>Fries</item>
+        <item>Haflinger</item>
+        <item>KWPN</item>
+        <item>New Forest</item>
+        <item>NRPS</item>
+        <item>Shetlander</item>
+        <item>Tinker</item>
+        <item>Welsh</item>
+        <item>Welsh Cob</item>
+    </string-array>
+</resources>

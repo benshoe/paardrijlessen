@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gmail.benshoe.paardrijlessen.AddLessonActivity">
+
+    <ImageButton
+        android:id="@+id/imageAddButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/ic_save_button"
+        android:onClick="save" />
+
+
+    <EditText
+        android:id="@+id/lesson_date"
+        android:layout_below="@id/imageAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:hint="@string/lesson_date"
+        android:onClick="showDatePickerDialog" />
+
+    <Spinner
+        android:id="@+id/horse_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lesson_date"/>
+
+    <EditText
+        android:id="@+id/lesson_grade"
+        android:layout_below="@id/horse_spinner"
+        android:hint="@string/lesson_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/lesson_summary"
+        android:layout_below="@id/lesson_grade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:capitalize="sentences"
+        android:hint="@string/lesson_description"/>
+
+</RelativeLayout>

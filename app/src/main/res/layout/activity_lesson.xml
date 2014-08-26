@@ -1,0 +1,73 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.gmail.benshoe.paardrijlessen.LessonActivity">
+
+    <ImageButton
+        android:id="@+id/imageAddButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/ic_save_button"
+        android:onClick="save" />
+
+    <ImageButton
+        android:id="@+id/imageEditButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="60dp"
+        android:background="@drawable/ic_edit_button"
+        android:onClick="adjustLesson" />
+
+    <TextView
+        android:id="@+id/lesson_date"
+        android:layout_below="@id/imageAddButton"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/horse_name"
+        android:layout_below="@id/lesson_date"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/lesson_grade"
+        android:layout_below="@id/horse_name"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/lesson_grade_editable"
+        android:textSize="14dp"
+        android:visibility="invisible"
+        android:layout_below="@id/horse_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/lesson_description"
+        android:textSize="14dp"
+        android:layout_below="@id/lesson_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/lesson_description_editable"
+        android:textSize="14dp"
+        android:visibility="invisible"
+        android:layout_below="@id/lesson_grade_editable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

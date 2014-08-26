@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gmail.benshoe.paardrijlessen.AddHorseActivity">
+
+    <ImageButton
+        android:id="@+id/imageAddButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/ic_save_button"
+        android:onClick="save" />
+
+    <EditText
+        android:id="@+id/horse"
+        android:layout_below="@id/imageAddButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:capitalize="sentences"
+        android:hint="@string/horse_label"
+        android:maxLines="1">
+        <requestFocus />
+    </EditText>
+
+    <Spinner
+        android:id="@+id/horse_type_spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horse"/>
+
+</RelativeLayout>
