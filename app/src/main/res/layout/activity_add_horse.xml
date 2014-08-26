@@ -13,6 +13,15 @@
         android:background="@drawable/ic_save_button"
         android:onClick="save" />
 
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/pictureImageButton"
+        android:background="@drawable/ic_picture_button"
+        android:layout_alignBottom="@+id/imageAddButton"
+        android:layout_toRightOf="@+id/imageAddButton"
+        android:onClick="takePicture"/>
+
     <EditText
         android:id="@+id/horse"
         android:layout_below="@id/imageAddButton"
