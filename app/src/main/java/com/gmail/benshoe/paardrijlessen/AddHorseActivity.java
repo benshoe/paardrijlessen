@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -63,7 +64,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     public void save(View view) throws Exception {
         EditText horseNameText = (EditText) findViewById(R.id.horse);
         String horseName = horseNameText.getText().toString();
-        if(checkHorseName(horseName)) {
+        if(validateHorseName(horseName)) {
             Spinner horseTypeSpinner = (Spinner) findViewById(R.id.horse_type_spinner);
             String horseType = horseTypeSpinner.getSelectedItem().toString();
             Intent intent = new Intent();
@@ -74,7 +75,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         }
     }
 
-    private boolean checkHorseName(String horseName) {
+    private boolean validateHorseName(String horseName) {
         if(horseName == null || "".equals(horseName.trim())) {
             Toast.makeText(getApplicationContext(), getString(R.string.unique_name_mandatory), Toast.LENGTH_LONG).show();
             return false;
@@ -98,12 +99,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
-                if(data == null) {
-                    Toast.makeText(this, "Er ging iets mis bij het opslaan van de foto.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Image saved to:\n" +
-                            data.getData(), Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(this, "Image saved to:\n" + m_fileUri.toString(), Toast.LENGTH_LONG).show();
             } else {
                 //User cancelled the image capture
                 Toast.makeText(this, "Je wilde toch geen foto maken?\nProbeer het gerust opnieuw als je zin hebt.", Toast.LENGTH_LONG).show();
@@ -114,8 +110,11 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void takePicture(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         m_fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+        if(m_fileUri == null)
+            return;
+        
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, m_fileUri); // set the image file name
         intent.putExtra("return-data", true);
 
@@ -131,7 +130,9 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
 
     /** Create a file Uri for saving an image or video */
     private Uri getOutputMediaFileUri(int type){
-        return Uri.fromFile(getOutputMediaFile(type));
+        File outputMediaFile = getOutputMediaFile(type);
+        if(outputMediaFile == null) return null;
+        return Uri.fromFile(outputMediaFile);
     }
 
     /** Create a File for saving an image or video */
@@ -148,20 +149,28 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
                 Toast.makeText(this, "mediaStorageDir: " + mediaStorageDir.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                Log.d("MyCameraApp", "failed to create directory");
+                Log.d("paardrijlessen", "failed to create directory");
                 return null;
             }
         }
 
         // Create a media file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        Editable horseNameText = ((EditText) findViewById(R.id.horse)).getText();
+        if(horseNameText == null){
+            return null;
+        }
+        String horseName = horseNameText.toString();
+        if(!validateHorseName(horseName)) {
+            return null;
+        }
+        String timeStamp = new SimpleDateFormat("_yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE){
+        if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
+                    "IMG_" + horseName + timeStamp + ".jpg");
+        } else if (type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
+                    "VID_" + timeStamp + ".mp4");
         } else {
             return null;
         }
