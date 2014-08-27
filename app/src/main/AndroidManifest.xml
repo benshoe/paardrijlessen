@@ -41,6 +41,8 @@
             android:name=".LessonActivity"
             android:label="@string/title_activity_lesson" >
         </activity>
-    </application>
 
+    </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 </manifest>
