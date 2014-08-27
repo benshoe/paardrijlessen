@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -117,7 +115,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
 
     public void takePicture(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        m_fileUri = getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE); // create a file to save the image
+        m_fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, m_fileUri); // set the image file name
         intent.putExtra("return-data", true);
 
@@ -128,8 +126,8 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     /*
     Camera code
      */
-    public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
+    private static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int MEDIA_TYPE_VIDEO = 2;
 
     /** Create a file Uri for saving an image or video */
     private Uri getOutputMediaFileUri(int type){
