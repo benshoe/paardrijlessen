@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.File;
+import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 
 public class AddHorseActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
@@ -61,25 +58,27 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void save(View view) throws Exception {
-        EditText horseNameText = (EditText) findViewById(R.id.horse);
-        String horseName = horseNameText.getText().toString();
-        if(validateHorseName(horseName)) {
-            Spinner horseTypeSpinner = (Spinner) findViewById(R.id.horse_type_spinner);
-            String horseType = horseTypeSpinner.getSelectedItem().toString();
-            Intent intent = new Intent();
-            intent.putExtra("horseName", horseName);
-            intent.putExtra("horseType", horseType);
-            setResult(RESULT_OK, intent);
-            finish();
-        }
+
+        String horseName = validateHorseName();
+        if(horseName == null)
+            return;
+        Spinner horseTypeSpinner = (Spinner) findViewById(R.id.horse_type_spinner);
+        String horseType = horseTypeSpinner.getSelectedItem().toString();
+        Intent intent = new Intent();
+        intent.putExtra("horseName", horseName);
+        intent.putExtra("horseType", horseType);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
-    private boolean validateHorseName(String horseName) {
+    private String validateHorseName() {
+        EditText horseNameText = (EditText) findViewById(R.id.horse);
+        String horseName = horseNameText.getText().toString();
         if(horseName == null || "".equals(horseName.trim())) {
             Toast.makeText(getApplicationContext(), getString(R.string.unique_name_mandatory), Toast.LENGTH_LONG).show();
-            return false;
+            return null;
         }
-        return true;
+        return horseName;
     }
 
     @Override
@@ -89,9 +88,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) {}
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,7 +112,8 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void takePicture(View view) {
-        m_fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+        String horseName = validateHorseName();
+        m_fileUri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horseName); // create a file to save the image
         if(m_fileUri == null)
             return;
 
@@ -125,60 +123,5 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
 
         // start the image capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-    }
-
-    /*
-    Camera code
-     */
-    private static final int MEDIA_TYPE_IMAGE = 1;
-    private static final int MEDIA_TYPE_VIDEO = 2;
-
-    /** Create a file Uri for saving an image or video */
-    private Uri getOutputMediaFileUri(int type){
-        File outputMediaFile = getOutputMediaFile(type);
-        if(outputMediaFile == null) return null;
-        return Uri.fromFile(outputMediaFile);
-    }
-
-    /** Create a File for saving an image or video */
-    private File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "paardrijlessen");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
-
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Toast.makeText(this, "mediaStorageDir: " + mediaStorageDir.getAbsolutePath(), Toast.LENGTH_LONG).show();
-                Log.d("paardrijlessen", "failed to create directory");
-                return null;
-            }
-        }
-
-        // Create a media file name
-        Editable horseNameText = ((EditText) findViewById(R.id.horse)).getText();
-        if(horseNameText == null){
-            return null;
-        }
-        String horseName = horseNameText.toString();
-        if(!validateHorseName(horseName)) {
-            return null;
-        }
-        File mediaFile;
-        if (type == MEDIA_TYPE_IMAGE) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_" + horseName + ".jpg");
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_" + horseName + ".mp4");
-        } else {
-            return null;
-        }
-
-        return mediaFile;
     }
 }
