@@ -14,12 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AddHorseActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
@@ -100,6 +99,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
             if(resultCode == RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
                 Toast.makeText(this, "Image saved to:\n" + m_fileUri.toString(), Toast.LENGTH_LONG).show();
+                showImage();
             } else {
                 //User cancelled the image capture
                 Toast.makeText(this, "Je wilde toch geen foto maken?\nProbeer het gerust opnieuw als je zin hebt.", Toast.LENGTH_LONG).show();
@@ -109,11 +109,16 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         }
     }
 
+    private void showImage() {
+        ImageView imageView = (ImageView) findViewById(R.id.horse_image);
+        imageView.setImageURI(m_fileUri);
+    }
+
     public void takePicture(View view) {
         m_fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
         if(m_fileUri == null)
             return;
-        
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, m_fileUri); // set the image file name
         intent.putExtra("return-data", true);
@@ -163,14 +168,13 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         if(!validateHorseName(horseName)) {
             return null;
         }
-        String timeStamp = new SimpleDateFormat("_yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_" + horseName + timeStamp + ".jpg");
+                    "IMG_" + horseName + ".jpg");
         } else if (type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_" + timeStamp + ".mp4");
+                    "VID_" + horseName + ".mp4");
         } else {
             return null;
         }
