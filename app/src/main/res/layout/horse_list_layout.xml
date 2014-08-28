@@ -10,6 +10,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/horse_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+
         <TextView
             android:id="@+id/horse_name"
             android:layout_width="match_parent"

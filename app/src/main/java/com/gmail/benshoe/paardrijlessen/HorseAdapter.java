@@ -5,9 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
+import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,9 @@ public class HorseAdapter extends BaseAdapter {
             // If you have created your own custom layout you can replace it here
             convertView = layoutInflater.inflate(R.layout.horse_list_layout, null, false);
         }
+
+        ImageView horseImage = (ImageView) convertView.findViewById(R.id.horse_image);
+        horseImage.setImageURI(CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horse.getName()));
 
         TextView horseName = (TextView) convertView.findViewById(R.id.horse_name);
         horseName.setText(horse.getName());
