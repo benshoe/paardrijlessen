@@ -1,6 +1,7 @@
 package com.gmail.benshoe.paardrijlessen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -66,7 +67,15 @@ public class HorseAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View view) {
                 Toast.makeText(view.getContext(), "Er is lang op " + getItem(position).getName() + " geklikt.", Toast.LENGTH_LONG).show();
-                return false;
+                return true;
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), HorseActivity.class);
+                intent.putExtra("horse", getItem(position));
+                view.getContext().startActivity(intent);
             }
         });
 
