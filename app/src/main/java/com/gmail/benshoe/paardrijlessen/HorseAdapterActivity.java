@@ -4,7 +4,6 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -36,16 +35,6 @@ public class HorseAdapterActivity extends ListActivity {
         View header = getLayoutInflater().inflate(R.layout.header, null);
         ListView listView = getListView();
         listView.addHeaderView(header);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(parent.getContext(), HorseActivity.class);
-                intent.putExtra("horse", m_horseAdapter.getItem(position - 1));
-                startActivity(intent);
-            }
-        });
 
         setListAdapter(m_horseAdapter);
     }
