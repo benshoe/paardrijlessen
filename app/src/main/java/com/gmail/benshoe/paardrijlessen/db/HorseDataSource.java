@@ -20,7 +20,7 @@ public class HorseDataSource {
         private SQLiteDatabase database;
         private MySQLiteHelper dbHelper;
         private String[] allColumns = { MySQLiteHelper.COLUMN_HORSE_ID,
-                MySQLiteHelper.COLUMN_HORSE_NAME, MySQLiteHelper.COLUMN_HORSE_TYPE};
+                MySQLiteHelper.COLUMN_HORSE_NAME, MySQLiteHelper.COLUMN_HORSE_TYPE, MySQLiteHelper.COLUMN_HORSE_IMAGE};
 
         public HorseDataSource(Context context) {
             dbHelper = new MySQLiteHelper(context);
@@ -34,10 +34,11 @@ public class HorseDataSource {
             dbHelper.close();
         }
 
-        public Horse createHorse(String name, HorseType horseType) {
+        public Horse createHorse(String name, HorseType horseType, String horseImage) {
             ContentValues values = new ContentValues();
             values.put(MySQLiteHelper.COLUMN_HORSE_NAME, name);
             values.put(MySQLiteHelper.COLUMN_HORSE_TYPE, horseType.getName());
+            values.put(MySQLiteHelper.COLUMN_HORSE_IMAGE, horseImage);
             long insertId = database.insert(MySQLiteHelper.TABLE_HORSE, null,
                     values);
             Cursor cursor = database.query(MySQLiteHelper.TABLE_HORSE,
@@ -83,6 +84,7 @@ public class HorseDataSource {
             } else {
                 horse.setHorseType(HorseType.fromString(cursor.getString(2)));
             }
+            horse.setImage(cursor.getString(3));
             return horse;
         }
 

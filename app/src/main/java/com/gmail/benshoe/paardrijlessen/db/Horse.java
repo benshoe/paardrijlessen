@@ -12,12 +12,18 @@ public class Horse implements Comparable<Horse>, Serializable {
     private long m_id;
     String m_name;
     HorseType m_horseType;
+    String m_image;
 
     public Horse(){}
 
-    public Horse(String name, HorseType horseType) {
+    public Horse(String name, HorseType horseType, int test) {
+        this(name, horseType, null);
+    }
+
+    public Horse(String name, HorseType horseType, String image) {
         m_name = name;
         m_horseType = horseType;
+        m_image = image;
     }
 
     public long getId() {
@@ -43,6 +49,14 @@ public class Horse implements Comparable<Horse>, Serializable {
         if(m_horseType == null)
             return HorseType.ONBEKEND;
         return m_horseType;
+    }
+
+    public String getImage() {
+        return m_image;
+    }
+
+    public void setImage(String fileName) {
+        m_image = fileName;
     }
 
     @Override

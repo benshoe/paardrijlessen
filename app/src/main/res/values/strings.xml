@@ -19,5 +19,6 @@
     <string name="exception_date">De datum is niet correct.</string>
     <string name="title_activity_lesson">Les</string>
     <string name="lesson_grade">Cijfer</string>
+    <string name="horse_image">default_horse</string>
 
 </resources>
