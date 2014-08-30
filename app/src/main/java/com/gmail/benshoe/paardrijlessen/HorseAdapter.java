@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
 
@@ -52,7 +53,8 @@ public class HorseAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+
         Horse horse = m_data.get(position);
 
         if (convertView == null) {
@@ -60,6 +62,13 @@ public class HorseAdapter extends BaseAdapter {
             // If you have created your own custom layout you can replace it here
             convertView = layoutInflater.inflate(R.layout.horse_list_layout, null, false);
         }
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(view.getContext(), "Er is lang op " + getItem(position).getName() + " geklikt.", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
 
         ImageView horseImage = (ImageView) convertView.findViewById(R.id.horse_image);
         Bitmap bitmap = null;
