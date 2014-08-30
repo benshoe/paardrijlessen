@@ -1,6 +1,8 @@
 package com.gmail.benshoe.paardrijlessen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +62,12 @@ public class HorseAdapter extends BaseAdapter {
         }
 
         ImageView horseImage = (ImageView) convertView.findViewById(R.id.horse_image);
-        horseImage.setImageURI(CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horse.getName()));
+        Bitmap bitmap = null;
+        String image = horse.getImage();
+        if(image != null) {
+            bitmap = decodeSampledBitmapFromPath(image.substring(6), 50, 50);
+        }
+        horseImage.setImageBitmap(bitmap);
 
         TextView horseName = (TextView) convertView.findViewById(R.id.horse_name);
         horseName.setText(horse.getName());
@@ -70,5 +76,41 @@ public class HorseAdapter extends BaseAdapter {
         horseType.setText(horse.getHorseType().getName());
 
         return convertView;
+    }
+
+    /**
+     * Load the images
+     */
+    public Bitmap decodeSampledBitmapFromPath(String path, int reqWidth,
+                                              int reqHeight) {
+
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        options.inSampleSize = calculateInSampleSize(options, reqWidth,
+                reqHeight);
+
+// Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        Bitmap bmp = BitmapFactory.decodeFile(path, options);
+        return bmp;
+    }
+
+    public int calculateInSampleSize(BitmapFactory.Options options,
+                                     int reqWidth, int reqHeight) {
+
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            if (width > height) {
+                inSampleSize = Math.round((float) height / (float) reqHeight);
+            } else {
+                inSampleSize = Math.round((float) width / (float) reqWidth);
+            }
+        }
+        return inSampleSize;
     }
 }

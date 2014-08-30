@@ -66,6 +66,7 @@ public class HorseAdapterActivity extends ListActivity {
                 String horseName = data.getStringExtra("horseName").trim();
                 String horseTypeName = data.getStringExtra("horseType");
                 HorseType horseType = HorseType.fromString(horseTypeName);
+                String horseImage = data.getStringExtra("horseImage");
 
                 for(Horse horse: m_horses) {
                     if (horse.getName().equals(horseName)){
@@ -74,7 +75,7 @@ public class HorseAdapterActivity extends ListActivity {
                     }
                 }
 
-                Horse horse = m_datasource.createHorse(horseName, horseType);
+                Horse horse = m_datasource.createHorse(horseName, horseType, horseImage);
                 m_horses.add(horse);
 
                 m_horseAdapter.addHorse(horse);

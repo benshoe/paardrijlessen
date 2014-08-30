@@ -14,6 +14,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_HORSE_ID = "_id";
     public static final String COLUMN_HORSE_NAME = "name";
     public static final String COLUMN_HORSE_TYPE = "type";
+    public static final String COLUMN_HORSE_IMAGE = "image_location";
 
     public static final String TABLE_LESSON = "lesson";
     public static final String COLUMN_LESSON_ID = "_id";
@@ -28,9 +29,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     // Database creation sql statement
     private static final String CREATE_HORSE_TABLE = "create table "
             + TABLE_HORSE + "(" + COLUMN_HORSE_ID
-            + " integer primary key autoincrement, " + COLUMN_HORSE_NAME
-            + " text not null, "
-            + COLUMN_HORSE_TYPE + " text null); ";
+            + " integer primary key autoincrement, "
+            + COLUMN_HORSE_NAME + " text not null, "
+            + COLUMN_HORSE_TYPE + " text null, "
+            + COLUMN_HORSE_IMAGE + " text null); ";
     private static final String CREATE_LESSON_TABLE = "create table "
             + TABLE_LESSON + "("
             + COLUMN_LESSON_ID + " integer primary key autoincrement, "
@@ -62,6 +64,9 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             switch (upgradeTo)
             {
                 case 1:
+                    break;
+                case 2:
+                    db.execSQL(MySQLiteUpgradeScript.ADD_COLUMN_HORSE_IMAGE);
                     break;
             }
             upgradeTo++;
