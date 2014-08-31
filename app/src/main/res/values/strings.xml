@@ -14,11 +14,13 @@
     <string name="title_activity_lesson_adapter">Lessen</string>
     <string name="title_activity_add_lesson">Les toevoegen</string>
     <string name="lesson_description">Omschrijving</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lesson_date">Datum</string>
     <string name="exception_date">De datum is niet correct.</string>
     <string name="title_activity_lesson">Les</string>
     <string name="lesson_grade">Cijfer</string>
     <string name="horse_image">default_horse</string>
+    <string name="delete_action">Verwijderen</string>
+    <string name="edit_action">Bewerken</string>
+    <string name="view_action">Bekijken</string>
 
 </resources>
