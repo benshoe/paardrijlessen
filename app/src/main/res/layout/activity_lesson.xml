@@ -22,7 +22,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="60dp"
+        android:layout_toRightOf="@id/imageAddButton"
         android:background="@drawable/ic_edit_button"
         android:onClick="adjustLesson" />
 
@@ -69,5 +69,12 @@
         android:layout_below="@id/lesson_grade_editable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@id/horse_image"
+        android:layout_below="@id/lesson_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </RelativeLayout>

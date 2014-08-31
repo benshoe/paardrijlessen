@@ -2,15 +2,18 @@ package com.gmail.benshoe.paardrijlessen;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
+import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 
 
@@ -45,6 +48,10 @@ public class LessonActivity extends Activity {
 
         TextView lessonGrade = (TextView) findViewById(R.id.lesson_grade);
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
+
+        ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
+        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
+        horseImage.setImageURI(uri);
     }
 
 
@@ -78,6 +85,9 @@ public class LessonActivity extends Activity {
         EditText lessonGrade = (EditText) findViewById(R.id.lesson_grade_editable);
         lessonGrade.setVisibility(View.VISIBLE);
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
+
+        ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
+        horseImage.setVisibility(View.INVISIBLE);
     }
 
     public void save(View view) {

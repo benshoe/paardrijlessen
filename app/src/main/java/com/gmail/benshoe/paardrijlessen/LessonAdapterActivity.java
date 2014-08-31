@@ -51,7 +51,8 @@ public class LessonAdapterActivity extends ListActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String horseName = m_horseDataSource.getHorseById(m_adapter.getItem(position - 1).getHorse()).getName();
+                Horse horse = m_horseDataSource.getHorseById(m_adapter.getItem(position - 1).getHorse());
+                String horseName = horse.getName();
                 Intent intent = new Intent(parent.getContext(), LessonActivity.class);
                 intent.putExtra("lesson", m_adapter.getItem(position - 1));
                 intent.putExtra("horseName", horseName);

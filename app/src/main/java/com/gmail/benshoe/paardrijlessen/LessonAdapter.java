@@ -1,15 +1,19 @@
 package com.gmail.benshoe.paardrijlessen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gmail.benshoe.paardrijlessen.db.Horse;
 import com.gmail.benshoe.paardrijlessen.db.HorseDataSource;
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.util.DateUtil;
+import com.gmail.benshoe.paardrijlessen.util.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,11 +66,18 @@ public class LessonAdapter extends BaseAdapter {
         if(lesson == null)
             return convertView;
 
-
         HorseDataSource dataSource = new HorseDataSource(m_context);
         dataSource.open();
 
-        String horseName = dataSource.getHorseById(lesson.getHorse()).getName();
+        Horse horse = dataSource.getHorseById(lesson.getHorse());
+        String horseName = horse.getName();
+        ImageView horseImage = (ImageView) convertView.findViewById(R.id.horse_image);
+        Bitmap bitmap = null;
+        String image = horse.getImage();
+        if(image != null) {
+            bitmap = ImageUtil.decodeSampledBitmapFromPath(image.substring(6), 50, 50);
+        }
+        horseImage.setImageBitmap(bitmap);
         dataSource.close();
 
         TextView lessonSummary = (TextView) convertView.findViewById(R.id.lesson_summary);
