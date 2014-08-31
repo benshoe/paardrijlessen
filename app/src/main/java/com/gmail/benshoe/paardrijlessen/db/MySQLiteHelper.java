@@ -24,7 +24,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LESSON_DESCRIPTION = "description";
 
     private static final String DATABASE_NAME = "paardrijlessen.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 1;
 
     // Database creation sql statement
     private static final String CREATE_HORSE_TABLE = "create table "
