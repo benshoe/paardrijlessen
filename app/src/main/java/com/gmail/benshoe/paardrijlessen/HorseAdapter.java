@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
 
@@ -36,6 +35,10 @@ public class HorseAdapter extends BaseAdapter {
     public void addHorse(Horse horse){
         m_data.add(horse);
         Collections.sort(m_data);
+    }
+
+    public void deleteHorse(Horse horse) {
+        m_data.remove(horse);
     }
 
     @Override
@@ -66,8 +69,7 @@ public class HorseAdapter extends BaseAdapter {
         convertView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Toast.makeText(view.getContext(), "Er is lang op " + getItem(position).getName() + " geklikt.", Toast.LENGTH_LONG).show();
-                return true;
+                return false;
             }
         });
         convertView.setOnClickListener(new View.OnClickListener() {

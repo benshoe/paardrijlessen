@@ -3,7 +3,11 @@ package com.gmail.benshoe.paardrijlessen;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +39,8 @@ public class HorseAdapterActivity extends ListActivity {
         View header = getLayoutInflater().inflate(R.layout.header, null);
         ListView listView = getListView();
         listView.addHeaderView(header);
+
+        registerForContextMenu(listView);
 
         setListAdapter(m_horseAdapter);
     }
@@ -70,6 +76,33 @@ public class HorseAdapterActivity extends ListActivity {
                 m_horseAdapter.addHorse(horse);
                 m_horseAdapter.notifyDataSetChanged();
             }
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Horse horse = m_horseAdapter.getItem(info.position - 1);
+        switch (item.getItemId()) {
+            case R.id.view:
+                Intent intent = new Intent(this, HorseActivity.class);
+                intent.putExtra("horse", horse);
+                startActivity(intent);
+                return true;
+            case R.id.delete:
+                m_datasource.deleteHorse(horse);
+                m_horseAdapter.deleteHorse(horse);
+                m_horseAdapter.notifyDataSetChanged();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
