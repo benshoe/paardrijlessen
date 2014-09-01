@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
 import com.gmail.benshoe.paardrijlessen.db.HorseDataSource;
+import com.gmail.benshoe.paardrijlessen.db.Lesson;
+import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,13 +99,25 @@ public class HorseAdapterActivity extends ListActivity {
                 startActivity(intent);
                 return true;
             case R.id.delete:
-                m_datasource.deleteHorse(horse);
-                m_horseAdapter.deleteHorse(horse);
-                m_horseAdapter.notifyDataSetChanged();
+                if(canDelete(horse)) {
+                    m_datasource.deleteHorse(horse);
+                    m_horseAdapter.deleteHorse(horse);
+                    m_horseAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.error_deleting_horse, Toast.LENGTH_LONG).show();
+                }
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private boolean canDelete(Horse horse) {
+        LessonDataSource dataSource = new LessonDataSource(this);
+        List<Lesson> lessons = dataSource.getLessonsByHorse(horse);
+        if(lessons.size() == 0)
+            return true;
+        return false;
     }
 
     @Override

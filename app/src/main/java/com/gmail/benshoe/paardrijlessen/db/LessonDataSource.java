@@ -97,4 +97,19 @@ public class LessonDataSource {
         database.update(MySQLiteHelper.TABLE_LESSON, contentValues, MySQLiteHelper.COLUMN_LESSON_ID + "=" + lesson.getId(), null);
         contentValues.clear();
     }
+
+    public List<Lesson> getLessonsByHorse(Horse horse) {
+        open();
+        List<Lesson> lessons = new ArrayList<Lesson>();
+        Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON, allColumns, MySQLiteHelper.COLUMN_LESSON_HORSE_ID + "=" + horse.getId(), null, null, null, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Lesson lesson = cursorToLesson(cursor);
+            lessons.add(lesson);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        close();
+        return lessons;
+    }
 }
