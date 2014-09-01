@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,18 +17,28 @@ import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
 import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 
+import java.util.Collections;
+import java.util.List;
 
-public class LessonActivity extends Activity {
+import static android.view.GestureDetector.*;
+
+public class LessonActivity extends Activity implements OnGestureListener {
 
     private Lesson m_lesson;
     private String m_horseName;
     private long m_lessonDate;
     private String m_lessonDescription;
     private long m_lessonGrade;
+    private List<Lesson> m_lessons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        LessonDataSource lessonDataSource = new LessonDataSource(this);
+        m_lessons = lessonDataSource.getAllLessons();
+        Collections.sort(m_lessons);
+
         setContentView(R.layout.activity_lesson);
 
         Intent intent = getIntent();
@@ -103,5 +114,47 @@ public class LessonActivity extends Activity {
         dataSource.close();
         Intent intent = new Intent(getApplicationContext(), LessonAdapterActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {}
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        if(Math.abs(v) < Math.abs(v2))
+            return false;
+        if(v > 0) {
+            moveItemRight();
+        } else {
+//            moveItemLeft();
+        }
+        return true;
+    }
+
+    private void moveItemRight() {
+        int pos = m_lessons.indexOf(m_lesson);
+        if(pos == m_lessons.size()) {
+            return;
+        }
+        m_lesson = m_lessons.get(pos + 1);
+        //TODO Hier moet de Activity opnieuw gestart worden?
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {}
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
+        return false;
     }
 }
