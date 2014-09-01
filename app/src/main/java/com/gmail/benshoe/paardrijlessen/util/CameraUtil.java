@@ -34,8 +34,8 @@ public class CameraUtil {
         // between applications and persist after your app has been uninstalled.
 
         // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
                 Log.d("paardrijlessen", "failed to create directory");
                 return null;
             }
