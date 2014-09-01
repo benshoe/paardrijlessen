@@ -67,7 +67,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         Intent intent = new Intent();
         intent.putExtra("horseName", horseName);
         intent.putExtra("horseType", horseType);
-        intent.putExtra("horseImage", m_fileUri.toString());
+        intent.putExtra("horseImage", m_fileUri != null ? m_fileUri.toString(): null);
         setResult(RESULT_OK, intent);
         finish();
     }
