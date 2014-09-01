@@ -70,9 +70,9 @@ public class Lesson implements Comparable<Lesson>, Serializable {
     @Override
     public int compareTo(Lesson another) {
         if(getDate() > another.getDate())
-            return 1;
-        if(getDate() < another.getDate())
             return -1;
+        if(getDate() < another.getDate())
+            return 1;
         return 0;
     }
 }
