@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
@@ -20,39 +22,45 @@ import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 import java.util.Collections;
 import java.util.List;
 
-import static android.view.GestureDetector.*;
+import static android.view.GestureDetector.OnGestureListener;
 
 public class LessonActivity extends Activity implements OnGestureListener {
 
     private Lesson m_lesson;
-    private String m_horseName;
-    private long m_lessonDate;
     private String m_lessonDescription;
     private long m_lessonGrade;
     private List<Lesson> m_lessons;
+
+    private GestureDetector m_gestureScanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        m_gestureScanner = new GestureDetector(this, this);
+
         LessonDataSource lessonDataSource = new LessonDataSource(this);
-        m_lessons = lessonDataSource.getAllLessons();
-        Collections.sort(m_lessons);
+        if(m_lessons == null) {
+            lessonDataSource.open();
+            m_lessons = lessonDataSource.getAllLessons();
+            lessonDataSource.close();
+            Collections.sort(m_lessons);
+        }
 
         setContentView(R.layout.activity_lesson);
 
         Intent intent = getIntent();
         m_lesson = (Lesson) intent.getSerializableExtra("lesson");
-        m_horseName = intent.getStringExtra("horseName");
-        m_lessonDate = m_lesson.getDate();
+        String horseName = intent.getStringExtra("horseName");
+        long lessonDateValue = m_lesson.getDate();
         m_lessonDescription = m_lesson.getDescription();
         m_lessonGrade = m_lesson.getGrade();
 
         TextView lessonDate = (TextView) findViewById(R.id.lesson_date);
-        lessonDate.setText(DateUtil.dateFrom(m_lessonDate));
+        lessonDate.setText(DateUtil.dateFrom(lessonDateValue));
 
         TextView horseNameText = (TextView) findViewById(R.id.horse_name);
-        horseNameText.setText(m_horseName);
+        horseNameText.setText(horseName);
 
         TextView lessonDescription = (TextView) findViewById(R.id.lesson_description);
         lessonDescription.setText(m_lessonDescription);
@@ -61,7 +69,7 @@ public class LessonActivity extends Activity implements OnGestureListener {
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
 
         ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
+        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horseName);
         horseImage.setImageURI(uri);
     }
 
@@ -108,7 +116,7 @@ public class LessonActivity extends Activity implements OnGestureListener {
         EditText lessonGrade = (EditText) findViewById(R.id.lesson_grade_editable);
         String grade = lessonGrade.getText().toString();
         m_lesson.setGrade(Long.valueOf(grade).longValue());
-        LessonDataSource dataSource = new LessonDataSource(getApplicationContext());
+        LessonDataSource dataSource = new LessonDataSource(this);
         dataSource.open();
         dataSource.updateLesson(m_lesson);
         dataSource.close();
@@ -117,28 +125,49 @@ public class LessonActivity extends Activity implements OnGestureListener {
     }
 
     @Override
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        return m_gestureScanner.onTouchEvent(motionEvent);
+    }
+
+    @Override
     public boolean onDown(MotionEvent motionEvent) {
+        Toast.makeText(this, "onDown.", Toast.LENGTH_SHORT).show();
         return false;
     }
 
     @Override
-    public void onShowPress(MotionEvent motionEvent) {}
+    public void onShowPress(MotionEvent motionEvent) {
+        Toast.makeText(this, "onShowPress.", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public boolean onSingleTapUp(MotionEvent motionEvent) {
+        Toast.makeText(this, "onSingleTapUp", Toast.LENGTH_SHORT).show();
         return false;
     }
 
+    /**
+     * This is continuously called as long as the user keeps the finger on the page
+     * @param motionEvent
+     * @param motionEvent2
+     * @param v
+     * @param v2
+     * @return
+     */
     @Override
     public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
-        if(Math.abs(v) < Math.abs(v2))
-            return false;
-        if(v > 0) {
-            moveItemRight();
-        } else {
-//            moveItemLeft();
-        }
-        return true;
+//        if(Math.abs(v) < Math.abs(v2)) {
+//            Toast.makeText(this, "v < v2 dus doen we niets.", Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
+//        if(v > 0) {
+////            moveItemRight();
+//            Toast.makeText(this, "v > 0 dus gaan we naar rechts.", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "v < 0 dus gaan we naar links.", Toast.LENGTH_SHORT).show();
+////            moveItemLeft();
+//        }
+        return false;
     }
 
     private void moveItemRight() {
@@ -151,8 +180,18 @@ public class LessonActivity extends Activity implements OnGestureListener {
     }
 
     @Override
-    public void onLongPress(MotionEvent motionEvent) {}
+    public void onLongPress(MotionEvent motionEvent) {
+        Toast.makeText(this, "onLongPress", Toast.LENGTH_SHORT).show();
+    }
 
+    /**
+     * This is triggered when the onDown is done and the user moves the finger and lets go of the screen
+     * @param motionEvent
+     * @param motionEvent2
+     * @param v
+     * @param v2
+     * @return
+     */
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent2, float v, float v2) {
         return false;
