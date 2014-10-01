@@ -42,4 +42,5 @@ public class ImageUtil {
         }
         return inSampleSize;
     }
+
 }

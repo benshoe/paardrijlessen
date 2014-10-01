@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.benshoe.paardrijlessen.db.Horse;
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 
 public class HorseActivity extends Activity {
 
@@ -27,7 +26,7 @@ public class HorseActivity extends Activity {
         horseType.setText(horse.getHorseType().getName());
 
         ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horse.getName());
+        Uri uri = Uri.parse(horse.getImage());
         horseImage.setImageURI(uri);
     }
 

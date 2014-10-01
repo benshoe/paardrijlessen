@@ -2,6 +2,7 @@ package com.gmail.benshoe.paardrijlessen.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -24,7 +25,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LESSON_DESCRIPTION = "description";
 
     private static final String DATABASE_NAME = "paardrijlessen.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database creation sql statement
     private static final String CREATE_HORSE_TABLE = "create table "
@@ -66,7 +67,15 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 case 1:
                     break;
                 case 2:
-                    db.execSQL(MySQLiteUpgradeScript.ADD_COLUMN_HORSE_IMAGE);
+                    try {
+                        db.execSQL(MySQLiteUpgradeScript.ADD_COLUMN_HORSE_IMAGE);
+                    } catch(SQLiteException exception) {
+                        if(exception.getMessage().contains("duplicate column name")) {
+                            break;
+                        }
+                        System.out.println("the message is not duplicate column name");
+                        throw exception;
+                    }
                     break;
             }
             upgradeTo++;
