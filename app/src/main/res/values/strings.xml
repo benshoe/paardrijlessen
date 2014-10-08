@@ -23,5 +23,6 @@
     <string name="edit_action">Bewerken</string>
     <string name="view_action">Bekijken</string>
     <string name="error_deleting_horse">Verwijderen van het paard is niet gelukt.\nWaarschijnlijk is er een les met dit paard geweest.</string>
+    <string name="copy_database">Kopieer database</string>
 
 </resources>

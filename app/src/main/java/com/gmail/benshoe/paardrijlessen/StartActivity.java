@@ -15,7 +15,6 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 public class StartActivity extends ListActivity {
@@ -51,25 +50,23 @@ public class StartActivity extends ListActivity {
             case 1:
                 startActivity(new Intent(this, LessonAdapterActivity.class));
                 break;
-            case 2:
-                try {
-                    copyAppDbToExternalStorage();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
         }
     }
 
-    private void copyAppDbToExternalStorage() throws IOException {
+    private void copyAppDbToExternalStorage() {
         File backupDB = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "copypaardrijlessen.db"); // for example "my_data_backup.db"
         File currentDB = getApplicationContext().getDatabasePath("paardrijlessen.db"); //databaseName=your current application database name, for example "my_data.db"
         if (currentDB.exists()) {
-            FileChannel src = new FileInputStream(currentDB).getChannel();
-            FileChannel dst = new FileOutputStream(backupDB).getChannel();
-            dst.transferFrom(src, 0, src.size());
-            src.close();
-            dst.close();
+            FileChannel src = null;
+            try {
+                src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -79,7 +76,8 @@ public class StartActivity extends ListActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.copy_database) {
+            copyAppDbToExternalStorage();
             return true;
         }
         return super.onOptionsItemSelected(item);

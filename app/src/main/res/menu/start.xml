@@ -4,4 +4,7 @@
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100" />
+    <item android:id="@+id/copy_database"
+        android:title="@string/copy_database"
+        android:orderInCategory="500" />
 </menu>

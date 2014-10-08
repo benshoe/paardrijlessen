@@ -3,7 +3,6 @@
     <string-array name="activities">
         <item>Paarden</item>
         <item>Lessen</item>
-        <item>Copy db</item>
     </string-array>
     <string-array name="horse_types_array">
         <item>Onbekend</item>
