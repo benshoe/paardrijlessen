@@ -11,9 +11,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gmail.benshoe.paardrijlessen.db.Horse;
+import com.gmail.benshoe.paardrijlessen.db.HorseDataSource;
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 
 
@@ -33,6 +34,7 @@ public class LessonActivity extends Activity {
         Intent intent = getIntent();
         m_lesson = (Lesson) intent.getSerializableExtra("lesson");
         m_horseName = intent.getStringExtra("horseName");
+        Horse horse = getHorse(m_horseName);
         m_lessonDate = m_lesson.getDate();
         m_lessonDescription = m_lesson.getDescription();
         m_lessonGrade = m_lesson.getGrade();
@@ -50,8 +52,17 @@ public class LessonActivity extends Activity {
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
 
         ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
+        Uri uri = Uri.parse(horse.getImage());
+        // CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
         horseImage.setImageURI(uri);
+    }
+
+    private Horse getHorse(String horseName) {
+        HorseDataSource dataSource = new HorseDataSource(getApplicationContext());
+        dataSource.open();
+        Horse horse = dataSource.getHorseByName(horseName);
+        dataSource.close();
+        return horse;
     }
 
 

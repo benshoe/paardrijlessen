@@ -15,11 +15,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
-
 public class AddHorseActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int SELECT_IMAGE_REQUEST_CODE = 200;
     private Uri m_fileUri;
 
     @Override
@@ -67,7 +65,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         Intent intent = new Intent();
         intent.putExtra("horseName", horseName);
         intent.putExtra("horseType", horseType);
-        intent.putExtra("horseImage", m_fileUri != null ? m_fileUri.toString(): null);
+        intent.putExtra("horseImage", m_fileUri == null ? null : m_fileUri.toString());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -93,17 +91,12 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if(requestCode == SELECT_IMAGE_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
-                Toast.makeText(this, "Image saved to:\n" + m_fileUri.toString(), Toast.LENGTH_LONG).show();
+                m_fileUri = data.getData();
                 showImage();
-            } else {
-                //User cancelled the image capture
-                Toast.makeText(this, "Je wilde toch geen foto maken?\nProbeer het gerust opnieuw als je zin hebt.", Toast.LENGTH_LONG).show();
             }
-        } else {
-            Toast.makeText(this, "Er ging iets fout bij het maken van de foto. \nProbeer het opnieuw.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -112,17 +105,8 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         imageView.setImageURI(m_fileUri);
     }
 
-    public void takePicture(View view) {
-        String horseName = validateHorseName();
-        m_fileUri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horseName); // create a file to save the image
-        if(m_fileUri == null)
-            return;
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, m_fileUri); // set the image file name
-        intent.putExtra("return-data", true);
-
-        // start the image capture Intent
-        startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+    public void selectPicture(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, SELECT_IMAGE_REQUEST_CODE);
     }
 }

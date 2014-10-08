@@ -75,7 +75,7 @@ public class LessonAdapter extends BaseAdapter {
         Bitmap bitmap = null;
         String image = horse.getImage();
         if(image != null) {
-            bitmap = ImageUtil.decodeSampledBitmapFromPath(image.substring(6), 50, 50);
+            bitmap = ImageUtil.decodeSampledBitmapFromPath(m_context, image, 50, 50);
         }
         horseImage.setImageBitmap(bitmap);
         dataSource.close();
