@@ -16,18 +16,9 @@
     <ImageButton
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/pictureImageButton"
-        android:background="@drawable/ic_picture_button"
-        android:layout_alignBottom="@+id/imageAddButton"
-        android:layout_toRightOf="@+id/imageAddButton"
-        android:onClick="takePicture"/>
-
-    <ImageButton
-        android:layout_width="50dp"
-        android:layout_height="50dp"
         android:id="@+id/pictureSelectButton"
-        android:background="@drawable/ic_select_picture"
-        android:layout_toRightOf="@+id/pictureImageButton"
+        android:background="@drawable/ic_picture_button"
+        android:layout_toRightOf="@+id/imageAddButton"
         android:onClick="selectPicture"/>
 
     <EditText
