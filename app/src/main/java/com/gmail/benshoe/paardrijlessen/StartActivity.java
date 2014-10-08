@@ -2,8 +2,8 @@ package com.gmail.benshoe.paardrijlessen;
 
 import android.app.ListActivity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 
 public class StartActivity extends ListActivity {
 
@@ -45,6 +51,25 @@ public class StartActivity extends ListActivity {
             case 1:
                 startActivity(new Intent(this, LessonAdapterActivity.class));
                 break;
+            case 2:
+                try {
+                    copyAppDbToExternalStorage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    private void copyAppDbToExternalStorage() throws IOException {
+        File backupDB = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "copypaardrijlessen.db"); // for example "my_data_backup.db"
+        File currentDB = getApplicationContext().getDatabasePath("paardrijlessen.db"); //databaseName=your current application database name, for example "my_data.db"
+        if (currentDB.exists()) {
+            FileChannel src = new FileInputStream(currentDB).getChannel();
+            FileChannel dst = new FileOutputStream(backupDB).getChannel();
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
         }
     }
 

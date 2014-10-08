@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
 import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 
 
@@ -50,7 +49,8 @@ public class LessonActivity extends Activity {
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
 
         ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
+        Uri uri = null; // TODO Create a solution. Probably by getting the Horse by name and then use the horseImage to set the uri
+        // CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
         horseImage.setImageURI(uri);
     }
 

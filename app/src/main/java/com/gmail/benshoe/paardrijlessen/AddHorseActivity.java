@@ -1,9 +1,12 @@
 package com.gmail.benshoe.paardrijlessen;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.gmail.benshoe.paardrijlessen.util.CameraUtil;
+import java.io.File;
 
 public class AddHorseActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
@@ -97,8 +100,21 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if(resultCode == RESULT_OK) {
                 super.onActivityResult(requestCode, resultCode, data);
-                Toast.makeText(this, "Image saved to:\n" + m_fileUri.toString(), Toast.LENGTH_LONG).show();
-                showImage();
+                final ContentResolver cr = getContentResolver();
+                final String[] p1 = new String[] {
+                        MediaStore.Images.ImageColumns._ID,
+                        MediaStore.Images.ImageColumns.DATE_TAKEN
+                };
+                File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+                Uri uri = Uri.parse(file.getAbsolutePath());
+                Cursor c1 = cr.query(uri, p1, null, null, p1[1] + " DESC");
+                if ( c1.moveToFirst() ) {
+                    String uristringpic = file.getAbsolutePath() +c1.getInt(0);
+                    System.out.println(file.getAbsolutePath());
+                    m_fileUri= Uri.parse(uristringpic);
+                    Toast.makeText(this, "Image saved to:\n" + m_fileUri.toString(), Toast.LENGTH_LONG).show();
+                    showImage();
+                }
             } else {
                 //User cancelled the image capture
                 Toast.makeText(this, "Je wilde toch geen foto maken?\nProbeer het gerust opnieuw als je zin hebt.", Toast.LENGTH_LONG).show();
@@ -119,16 +135,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void takePicture(View view) {
-        String horseName = validateHorseName();
-        m_fileUri = CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, horseName); // create a file to save the image
-        if(m_fileUri == null)
-            return;
-
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, m_fileUri); // set the image file name
-        intent.putExtra("return-data", true);
-
-        // start the image capture Intent
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 

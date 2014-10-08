@@ -85,8 +85,7 @@ public class HorseAdapter extends BaseAdapter {
         Bitmap bitmap = null;
         String image = horse.getImage();
         if(image != null) {
-            image = image.startsWith("file") ? image.substring(6):image;
-            bitmap = ImageUtil.decodeSampledBitmapFromPath(image, 50, 50);
+            bitmap = ImageUtil.decodeSampledBitmapFromPath(m_context, image, 50, 50);
         }
         horseImage.setImageBitmap(bitmap);
 
@@ -98,6 +97,5 @@ public class HorseAdapter extends BaseAdapter {
 
         return convertView;
     }
-
 
 }
