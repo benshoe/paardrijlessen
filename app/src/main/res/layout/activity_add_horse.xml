@@ -18,11 +18,11 @@
         android:layout_height="50dp"
         android:id="@+id/pictureSelectButton"
         android:background="@drawable/ic_picture_button"
-        android:layout_toRightOf="@+id/imageAddButton"
+        android:layout_toRightOf="@id/imageAddButton"
         android:onClick="selectPicture"/>
 
     <EditText
-        android:id="@+id/horse"
+        android:id="@+id/horse_name"
         android:layout_below="@id/imageAddButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:id="@+id/horse_type_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/horse"/>
+        android:layout_below="@id/horse_name"/>
 
     <ImageView
         android:id="@+id/horse_image"

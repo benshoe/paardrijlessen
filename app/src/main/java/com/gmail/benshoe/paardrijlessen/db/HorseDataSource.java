@@ -103,4 +103,13 @@ public class HorseDataSource {
         cursor.close();
         return horse;
     }
+
+    public int updateHorse(Horse horse) {
+        ContentValues values = new ContentValues();
+        values.put(MySQLiteHelper.COLUMN_HORSE_NAME, horse.getName());
+        values.put(MySQLiteHelper.COLUMN_HORSE_TYPE, horse.getHorseType().getName());
+        values.put(MySQLiteHelper.COLUMN_HORSE_IMAGE, horse.getImage());
+
+        return database.update(MySQLiteHelper.TABLE_HORSE, values, MySQLiteHelper.COLUMN_HORSE_ID + "='" + horse.getId() + "'", null);
+    }
 }

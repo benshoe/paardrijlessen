@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HorseAdapterActivity extends ListActivity {
-    public static final int REQUEST_CODE = 12345;
+    public static final int REQUEST_NEW_HORSE_CODE = 200;
+    private static final int REQUEST_EXISTING_HORSE_CODE = 201;
 
     private HorseAdapter m_horseAdapter;
 
@@ -51,31 +52,40 @@ public class HorseAdapterActivity extends ListActivity {
     // of the buttons in horse_list_layout.xml
     public void onClick(View view) {
         Intent intent = new Intent(this, AddHorseActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivityForResult(intent, REQUEST_NEW_HORSE_CODE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE) {
+        if(requestCode == REQUEST_NEW_HORSE_CODE || requestCode == REQUEST_EXISTING_HORSE_CODE) {
             if(resultCode == RESULT_OK) {
                 onResume();
-                // save the new horse to the database
                 String horseName = data.getStringExtra("horseName").trim();
                 String horseTypeName = data.getStringExtra("horseType");
                 HorseType horseType = HorseType.fromString(horseTypeName);
                 String horseImage = data.getStringExtra("horseImage");
 
-                for(Horse horse: m_horses) {
-                    if (horse.getName().equals(horseName)){
-                        Toast.makeText(getApplicationContext(), getString(R.string.unique_name), Toast.LENGTH_LONG).show();
-                        return;
+                if(requestCode == REQUEST_NEW_HORSE_CODE) {
+                    for (Horse horse : m_horses) {
+                        if (horse.getName().equals(horseName)) {
+                            Toast.makeText(getApplicationContext(), getString(R.string.unique_name), Toast.LENGTH_LONG).show();
+                            return;
+                        }
                     }
+                    // save the new horse to the database
+                    Horse horse = m_datasource.createHorse(horseName, horseType, horseImage);
+                    m_horses.add(horse);
+
+                    m_horseAdapter.addHorse(horse);
+                } else {
+                    long horseId = data.getLongExtra("horseId", -1);
+                    Horse horse = m_datasource.getHorseById(horseId);
+                    horse.setImage(horseImage);
+                    horse.setHorseType(horseType);
+                    horse.setName(horseName);
+                    m_datasource.updateHorse(horse);
                 }
 
-                Horse horse = m_datasource.createHorse(horseName, horseType, horseImage);
-                m_horses.add(horse);
-
-                m_horseAdapter.addHorse(horse);
                 m_horseAdapter.notifyDataSetChanged();
             }
         }
@@ -94,9 +104,9 @@ public class HorseAdapterActivity extends ListActivity {
         Horse horse = m_horseAdapter.getItem(info.position - 1);
         switch (item.getItemId()) {
             case R.id.view:
-                Intent intent = new Intent(this, HorseActivity.class);
+                Intent intent = new Intent(this, AddHorseActivity.class);
                 intent.putExtra("horse", horse);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_EXISTING_HORSE_CODE);
                 return true;
             case R.id.delete:
                 if(canDelete(horse)) {
@@ -123,6 +133,7 @@ public class HorseAdapterActivity extends ListActivity {
     @Override
     protected void onResume() {
         m_datasource.open();
+        m_horseAdapter.refreshHorses(m_datasource.getAllHorses());
         super.onResume();
     }
 

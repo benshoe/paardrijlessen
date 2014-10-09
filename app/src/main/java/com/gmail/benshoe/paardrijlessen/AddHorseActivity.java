@@ -15,10 +15,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.gmail.benshoe.paardrijlessen.db.Horse;
+
 public class AddHorseActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     private static final int SELECT_IMAGE_REQUEST_CODE = 200;
     private Uri m_fileUri;
+    private long m_horseId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,29 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        Intent intent = getIntent();
+        Horse horse = (Horse) intent.getSerializableExtra("horse");
+        if(horse != null) {
+            m_horseId = horse.getId();
+            EditText horseName = (EditText) findViewById(R.id.horse_name);
+            String name = horse.getName();
+            horseName.setText(name);
+
+            ArrayAdapter myAdap = (ArrayAdapter) spinner.getAdapter();
+            int pos = myAdap.getPosition(horse.getHorseType().getName());
+            spinner.setSelection(pos);
+
+            if(horse.getImage() != null) {
+                m_fileUri = Uri.parse(horse.getImage());
+                ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
+                horseImage.setImageURI(m_fileUri);
+            }
+
+        }
+
+
+
     }
 
 
@@ -63,6 +89,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
         Spinner horseTypeSpinner = (Spinner) findViewById(R.id.horse_type_spinner);
         String horseType = horseTypeSpinner.getSelectedItem().toString();
         Intent intent = new Intent();
+        intent.putExtra("horseId", m_horseId);
         intent.putExtra("horseName", horseName);
         intent.putExtra("horseType", horseType);
         intent.putExtra("horseImage", m_fileUri == null ? null : m_fileUri.toString());
@@ -71,7 +98,7 @@ public class AddHorseActivity extends Activity implements AdapterView.OnItemSele
     }
 
     private String validateHorseName() {
-        EditText horseNameText = (EditText) findViewById(R.id.horse);
+        EditText horseNameText = (EditText) findViewById(R.id.horse_name);
         String horseName = horseNameText.getText().toString();
         if(horseName == null || "".equals(horseName.trim())) {
             Toast.makeText(getApplicationContext(), getString(R.string.unique_name_mandatory), Toast.LENGTH_LONG).show();

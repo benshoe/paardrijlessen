@@ -24,7 +24,7 @@ public class HorseAdapter extends BaseAdapter {
 
     private final Context m_context;
 
-    private final List<Horse> m_data = new ArrayList<Horse>();
+    private List<Horse> m_data = new ArrayList<Horse>();
 
     public HorseAdapter(Context context, List<Horse> horses) {
         m_context = context;
@@ -35,6 +35,11 @@ public class HorseAdapter extends BaseAdapter {
     public void addHorse(Horse horse){
         m_data.add(horse);
         Collections.sort(m_data);
+    }
+
+    public void refreshHorses(List<Horse> horses) {
+        m_data = horses;
+        notifyDataSetChanged();
     }
 
     public void deleteHorse(Horse horse) {
@@ -75,9 +80,9 @@ public class HorseAdapter extends BaseAdapter {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), HorseActivity.class);
+                Intent intent = new Intent(view.getContext(), AddHorseActivity.class);
                 intent.putExtra("horse", getItem(position));
-                view.getContext().startActivity(intent);
+                view.getContext().startActivity(intent); //TODO Waarom kan ik hier niet in een startActivityForResult starten?
             }
         });
 
