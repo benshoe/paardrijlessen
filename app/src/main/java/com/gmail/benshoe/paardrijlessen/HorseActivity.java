@@ -25,9 +25,11 @@ public class HorseActivity extends Activity {
         TextView horseType = (TextView) findViewById(R.id.horse_type);
         horseType.setText(horse.getHorseType().getName());
 
-        ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = Uri.parse(horse.getImage());
-        horseImage.setImageURI(uri);
+        if(horse.getImage() != null) {
+            Uri uri = Uri.parse(horse.getImage());
+            ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
+            horseImage.setImageURI(uri);
+        }
     }
 
     @Override

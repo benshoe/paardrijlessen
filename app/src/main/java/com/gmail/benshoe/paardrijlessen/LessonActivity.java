@@ -51,10 +51,11 @@ public class LessonActivity extends Activity {
         TextView lessonGrade = (TextView) findViewById(R.id.lesson_grade);
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
 
-        ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
-        Uri uri = Uri.parse(horse.getImage());
-        // CameraUtil.getOutputMediaFileUri(CameraUtil.MEDIA_TYPE_IMAGE, m_horseName);
-        horseImage.setImageURI(uri);
+        if(horse.getImage() != null) {
+            ImageView horseImage = (ImageView) findViewById(R.id.horse_image);
+            Uri uri = Uri.parse(horse.getImage());
+            horseImage.setImageURI(uri);
+        }
     }
 
     private Horse getHorse(String horseName) {
