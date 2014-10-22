@@ -39,6 +39,7 @@ public class HorseAdapter extends BaseAdapter {
 
     public void refreshHorses(List<Horse> horses) {
         m_data = horses;
+        Collections.sort(m_data);
         notifyDataSetChanged();
     }
 
