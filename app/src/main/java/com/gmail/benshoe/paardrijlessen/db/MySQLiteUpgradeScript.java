@@ -6,4 +6,5 @@ package com.gmail.benshoe.paardrijlessen.db;
  */
 public class MySQLiteUpgradeScript {
     public static final String ADD_COLUMN_HORSE_IMAGE = "ALTER TABLE " + MySQLiteHelper.TABLE_HORSE + " ADD COLUMN " + MySQLiteHelper.COLUMN_HORSE_IMAGE + " TEXT;";
+    public static final String ADD_COLUMN_LESSON_GROUP = "ALTER TABLE " + MySQLiteHelper.TABLE_LESSON + " ADD COLUMN " + MySQLiteHelper.COLUMN_LESSON_GROUP + " INTEGER;";
 }

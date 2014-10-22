@@ -24,7 +24,8 @@ public class LessonDataSource {
             MySQLiteHelper.COLUMN_LESSON_DATE,
             MySQLiteHelper.COLUMN_LESSON_DESCRIPTION,
             MySQLiteHelper.COLUMN_LESSON_HORSE_ID,
-            MySQLiteHelper.COLUMN_LESSON_GRADE
+            MySQLiteHelper.COLUMN_LESSON_GRADE,
+            MySQLiteHelper.COLUMN_LESSON_GROUP
     };
 
     public LessonDataSource(Context context) {
@@ -59,12 +60,13 @@ public class LessonDataSource {
                 + " = " + id, null);
     }
 
-    public Lesson createLesson(Date date, String description, int horse_id, long lesson_grade) {
+    public Lesson createLesson(Date date, String description, int horseId, long lessonGrade, long lessonGroup) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_LESSON_DATE, date.getTime());
         values.put(MySQLiteHelper.COLUMN_LESSON_DESCRIPTION, description);
-        values.put(MySQLiteHelper.COLUMN_LESSON_HORSE_ID, horse_id);
-        values.put(MySQLiteHelper.COLUMN_LESSON_GRADE, lesson_grade);
+        values.put(MySQLiteHelper.COLUMN_LESSON_HORSE_ID, horseId);
+        values.put(MySQLiteHelper.COLUMN_LESSON_GRADE, lessonGrade);
+        values.put(MySQLiteHelper.COLUMN_LESSON_GROUP, lessonGroup);
         long insertId = database.insert(MySQLiteHelper.TABLE_LESSON, null, values);
         Cursor cursor = database.query(MySQLiteHelper.TABLE_LESSON, allColumns, MySQLiteHelper.COLUMN_LESSON_ID + "=" + insertId, null, null, null, null);
         values.clear();
@@ -81,6 +83,7 @@ public class LessonDataSource {
         lesson.setDescription(cursor.getString(2));
         lesson.setHorse(cursor.getLong(3));
         lesson.setGrade(cursor.getLong(4));
+        lesson.setGroup(cursor.getLong(5));
         return lesson;
     }
 

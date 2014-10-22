@@ -67,11 +67,13 @@ public class AddLessonActivity extends Activity {
     public void save(View view) {
         EditText description = (EditText) findViewById(R.id.lesson_summary);
         EditText lessonGrade = (EditText) findViewById(R.id.lesson_grade);
+        EditText lessonGroup = (EditText) findViewById(R.id.lesson_group);
         Intent intent = new Intent();
         intent.putExtra("lessonDescription", description.getText().toString());
         intent.putExtra("lessonDate", m_lessonDate.getText().toString());
         intent.putExtra("horseName", m_horseNameSpinner.getSelectedItem().toString());
         intent.putExtra("lessonGrade", lessonGrade.getText().toString());
+        intent.putExtra("lessonGroup", lessonGroup.getText().toString());
         setResult(RESULT_OK, intent);
         finish();
     }

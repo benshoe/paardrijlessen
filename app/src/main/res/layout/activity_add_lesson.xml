@@ -27,12 +27,23 @@
         android:id="@+id/horse_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lesson_date"/>
+        android:layout_toRightOf="@id/lesson_date"
+        android:layout_below="@id/imageAddButton"/>
 
     <EditText
         android:id="@+id/lesson_grade"
         android:layout_below="@id/horse_spinner"
         android:hint="@string/lesson_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/lesson_group"
+        android:layout_toRightOf="@id/lesson_grade"
+        android:layout_alignLeft="@id/horse_spinner"
+        android:layout_below="@id/horse_spinner"
+        android:hint="@string/lesson_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"/>

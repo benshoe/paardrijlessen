@@ -13,12 +13,14 @@ public class Lesson implements Comparable<Lesson>, Serializable {
     private long m_horse;
     private String m_description;
     private long m_grade;
+    private long m_group;
 
-    public Lesson(long date, long horse, String description, long grade) {
+    public Lesson(long date, long horse, String description, long grade, long group) {
         m_date = date;
         m_horse = horse;
         m_description = description;
         m_grade = grade;
+        m_group = group;
     }
 
     public Lesson () {}
@@ -61,6 +63,14 @@ public class Lesson implements Comparable<Lesson>, Serializable {
 
     public void setGrade(long grade) {
         m_grade = grade;
+    }
+
+    public long getGroup() {
+        return m_group;
+    }
+
+    public void setGroup(long group) {
+        m_group = group;
     }
 
     public String toString() {

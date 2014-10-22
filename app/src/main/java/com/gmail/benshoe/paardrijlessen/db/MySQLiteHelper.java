@@ -22,10 +22,11 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LESSON_DATE = "date";
     public static final String COLUMN_LESSON_HORSE_ID = "horse_id";
     public static final String COLUMN_LESSON_GRADE = "grade";
+    public static final String COLUMN_LESSON_GROUP = "lesson_group";
     public static final String COLUMN_LESSON_DESCRIPTION = "description";
 
     private static final String DATABASE_NAME = "paardrijlessen.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Database creation sql statement
     private static final String CREATE_HORSE_TABLE = "create table "
@@ -40,6 +41,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_LESSON_DATE + " integer not null, "
             + COLUMN_LESSON_DESCRIPTION + " text not null, "
             + COLUMN_LESSON_GRADE + " integer not null, "
+            + COLUMN_LESSON_GROUP + " integer not null, "
             + COLUMN_LESSON_HORSE_ID + " integer, foreign key (" + COLUMN_LESSON_HORSE_ID + ") references " + TABLE_HORSE + "(" + COLUMN_HORSE_ID + ") "
             + ");";
 
@@ -77,6 +79,16 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                         throw exception;
                     }
                     break;
+                case 3:
+                    try {
+                        db.execSQL(MySQLiteUpgradeScript.ADD_COLUMN_LESSON_GROUP);
+                    } catch (SQLiteException exception) {
+                        if(exception.getMessage().contains("duplicate column name")) {
+                            break;
+                        }
+                        System.out.println("the message is not duplicate column name");
+                        throw exception;
+                    }
             }
             upgradeTo++;
         }
