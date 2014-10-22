@@ -25,6 +25,7 @@ public class LessonActivity extends Activity {
     private long m_lessonDate;
     private String m_lessonDescription;
     private long m_lessonGrade;
+    private long m_lessonGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class LessonActivity extends Activity {
         m_lessonDate = m_lesson.getDate();
         m_lessonDescription = m_lesson.getDescription();
         m_lessonGrade = m_lesson.getGrade();
+        m_lessonGroup = m_lesson.getGroup();
 
         TextView lessonDate = (TextView) findViewById(R.id.lesson_date);
         lessonDate.setText(DateUtil.dateFrom(m_lessonDate));
@@ -50,6 +52,9 @@ public class LessonActivity extends Activity {
 
         TextView lessonGrade = (TextView) findViewById(R.id.lesson_grade);
         lessonGrade.setText(Long.valueOf(m_lessonGrade).toString());
+
+        TextView lessonGroup = (TextView) findViewById(R.id.lesson_group);
+        lessonGroup.setText(Long.valueOf(m_lessonGroup).toString());
 
         if(horse.getImage() != null) {
             ImageView horseImage = (ImageView) findViewById(R.id.horse_image);

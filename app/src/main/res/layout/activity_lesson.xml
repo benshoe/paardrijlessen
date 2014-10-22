@@ -47,6 +47,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <TextView
+        android:id="@+id/lesson_group"
+        android:layout_below="@id/lesson_grade"
+        android:textSize="14dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/lesson_grade_editable"
         android:textSize="14dp"
@@ -58,7 +65,7 @@
     <TextView
         android:id="@+id/lesson_description"
         android:textSize="14dp"
-        android:layout_below="@id/lesson_grade"
+        android:layout_below="@id/lesson_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

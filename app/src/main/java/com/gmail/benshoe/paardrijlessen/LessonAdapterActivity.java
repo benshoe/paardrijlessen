@@ -84,7 +84,7 @@ public class LessonAdapterActivity extends ListActivity {
                     Toast.makeText(getApplicationContext(), R.string.exception_date, Toast.LENGTH_LONG).show();
                 }
 
-                Lesson lesson = m_datasource.createLesson(lessonDate, lessonDescription, (int) horse.getId(), Long.valueOf(lessonGrade).longValue(), Long.valueOf(lessonGrade).longValue());
+                Lesson lesson = m_datasource.createLesson(lessonDate, lessonDescription, (int) horse.getId(), Long.valueOf(lessonGrade).longValue(), Long.valueOf(lessonGroup).longValue());
                 m_lessons.add(lesson);
 
                 m_adapter.addLesson(lesson);
