@@ -1,9 +1,13 @@
 package com.gmail.benshoe.paardrijlessen;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +18,7 @@ import com.gmail.benshoe.paardrijlessen.db.Horse;
 import com.gmail.benshoe.paardrijlessen.db.HorseDataSource;
 import com.gmail.benshoe.paardrijlessen.db.Lesson;
 import com.gmail.benshoe.paardrijlessen.db.LessonDataSource;
+import com.gmail.benshoe.paardrijlessen.util.DateUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +65,8 @@ public class LessonAdapterActivity extends ListActivity {
             }
         });
 
+        registerForContextMenu(listView);
+
         listView.addHeaderView(header);
         listView.setAdapter(m_adapter);
     }
@@ -99,6 +106,59 @@ public class LessonAdapterActivity extends ListActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.lesson_adapter, menu);
         return true;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.delete_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Lesson lesson = m_adapter.getItem(info.position - 1);
+        switch (item.getItemId()) {
+            case R.id.delete:
+                confirmDelete(lesson);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    private void confirmDelete(final Lesson lesson) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set title
+        alertDialogBuilder.setTitle("Verwijder les");
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage("Weet je zeker dat je de les van " + DateUtil.dateFrom(lesson.getDate()) + " wilt verwijderen?")
+                .setCancelable(false)
+                .setPositiveButton("Ja",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, delete the lesson
+                        m_datasource.deleteLesson(lesson);
+                        m_adapter.deleteLesson(lesson);
+                        m_adapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Nee",new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,int id) {
+                        // if this button is clicked, just close
+                        // the dialog box and do nothing
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 
     @Override

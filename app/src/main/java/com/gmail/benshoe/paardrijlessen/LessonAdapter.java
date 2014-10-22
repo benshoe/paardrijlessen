@@ -39,6 +39,11 @@ public class LessonAdapter extends BaseAdapter {
         Collections.sort(m_data);
     }
 
+    public void deleteLesson(Lesson lesson) {
+        m_data.remove(lesson);
+        Collections.sort(m_data);
+    }
+
     @Override
     public int getCount() {
         return m_data.size();
