@@ -113,6 +113,7 @@ public class LessonActivity extends Activity {
 
         EditText lessonGrade = (EditText) findViewById(R.id.lesson_grade_editable);
         String grade = lessonGrade.getText().toString();
+        grade = "".equals(grade) ? "0": grade;
         m_lesson.setGrade(Long.valueOf(grade).longValue());
         LessonDataSource dataSource = new LessonDataSource(getApplicationContext());
         dataSource.open();

@@ -26,7 +26,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LESSON_DESCRIPTION = "description";
 
     private static final String DATABASE_NAME = "paardrijlessen.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     // Database creation sql statement
     private static final String CREATE_HORSE_TABLE = "create table "
@@ -79,9 +79,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                         throw exception;
                     }
                     break;
-                case 3:
+                case 4:
                     try {
                         db.execSQL(MySQLiteUpgradeScript.ADD_COLUMN_LESSON_GROUP);
+                        db.execSQL(MySQLiteUpgradeScript.DEFAULT_LESSON_GROUP_VALUE);
                     } catch (SQLiteException exception) {
                         if(exception.getMessage().contains("duplicate column name")) {
                             break;

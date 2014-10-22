@@ -75,6 +75,7 @@ public class LessonAdapterActivity extends ListActivity {
                 String lessonGrade = data.getStringExtra("lessonGrade");
                 String lessonGroup = data.getStringExtra("lessonGroup");
                 lessonGrade = lessonGrade.equals("") ? "0" : lessonGrade;
+                lessonGroup = lessonGroup.equals("") ? "0" : lessonGroup;
                 Horse horse = m_horseDataSource.getHorseByName(horseName);
 
                 Date lessonDate = null;
