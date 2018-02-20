@@ -24,3 +24,5 @@ proguard/
 
 # My added files
 .idea/workspace.xml
+.DS_Store
+.idea/qaplug_profiles.xml
